@@ -50,6 +50,15 @@ public class InterceptGenerator {
         return new Date(randomMillisSinceEpoch);
     }
 
+    public static Collection<Intercept> createIntercepts(int count) {
+        Collection<Intercept> collection = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            Intercept icpt = InterceptGenerator.createIntercept();
+            collection.add(icpt);
+        }
+        return collection;
+    }
+    
     public static Intercept createIntercept() {
         Intercept i = new Intercept();
         i.setElnot(randomString(5));

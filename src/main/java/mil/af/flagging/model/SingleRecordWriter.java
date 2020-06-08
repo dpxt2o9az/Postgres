@@ -7,22 +7,22 @@ import java.sql.SQLException;
 
 public class SingleRecordWriter {
 
-    static String PARENT_RECORD_INSERTION
-            = "INSERT INTO intercepts"
-            + " ( intercept_id, wrangler_id, elnot ) "
+    public static final String PARENT_RECORD_INSERTION
+            = "INSERT INTO intercept"
+            + " ( intercept_id, wrangler_id, elnot, mod_type, scan_type, scan_period, time_process, int_up_time, int_down_time, latitude, longitude, major, minor, orientation ) "
             + "   values "
-            + " ( DEFAULT, ?, ? ) ";
-    static String RF_RECORD_INSERTION
+            + " ( DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
+    public static final  String RF_RECORD_INSERTION
             = "INSERT INTO intercept_rfs "
             + "  ( intercept_id, sequence, value ) "
             + "     values "
             + "   ( ?, ?, ? )";
-    static String PRI_RECORD_INSERTION
+    public static final  String PRI_RECORD_INSERTION
             = "INSERT INTO intercept_pris "
             + "  ( intercept_id, sequence, value ) "
             + "     values "
             + "   ( ?, ?, ? )";
-    static String PD_RECORD_INSERTION
+    public static final  String PD_RECORD_INSERTION
             = "INSERT INTO intercept_pds "
             + "  ( intercept_id, sequence, value ) "
             + "     values "

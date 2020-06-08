@@ -8,8 +8,9 @@ import javax.persistence.*;
 public class Intercept implements Serializable {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int interceptId;
+    @Column(unique = true)
     private String wranglerId;
     private String elnot;
 

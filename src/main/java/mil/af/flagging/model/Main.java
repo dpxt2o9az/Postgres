@@ -1,43 +1,19 @@
 package mil.af.flagging.model;
 
-import java.sql.*;
-import javax.persistence.*;
+import javax.sql.DataSource;
+import mil.af.flagging.dataload.db.DataSourceBuilder;
 
 public class Main {
 
-    static {
-        InterceptGenerator.seed(25L);
-    }
+    private static final String DB_URL = "jdbc:postgresql://maelstrom.lan:32769/postgres";
+    private static final String DB_PASS = "";
+    private static final String DB_USER = "postgres";
 
     public static void main(String[] args) throws Exception {
-        doJDBCWithoutAutoCommit();
+        InterceptGenerator.seed(25L);
+        DataSource ds = DataSourceBuilder.build(DB_URL, DB_USER, DB_PASS);
+        DbRunner runner = new JPARunner(ds);
+        runner.run();
     }
 
-    private static void doJPAWithOneTransaction() {
-        final String PERSISTENCE_UNIT_NAME = "intercept";
-        EntityManagerFactory factory;
-        factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager em = factory.createEntityManager();
-
-        em.getTransaction().begin();
-        for (int i = 0; i < 1000; i++) {
-            em.persist(InterceptGenerator.createIntercept());
-        }
-
-        em.getTransaction().commit();
-
-        em.close();
-    }
-
-    private static void doJDBCWithoutAutoCommit() throws SQLException {
-        try (Connection c = DriverManager.getConnection("jdbc:postgresql://maelstrom.lan:32769/postgres", "postgres", "")) {
-            c.setAutoCommit(false);
-            SchemaCreator.dewIt(c);
-            SingleRecordWriter db = new SingleRecordWriter(c);
-            for (int i = 0; i < 1000; i++) {
-                db.writeRecord(InterceptGenerator.createIntercept());
-            }
-            c.commit();
-        }
-    }
 }
