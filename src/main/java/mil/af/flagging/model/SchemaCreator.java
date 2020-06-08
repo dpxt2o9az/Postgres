@@ -5,7 +5,7 @@ import java.sql.*;
 public class SchemaCreator {
 
     static String[] script = {
-        "drop table if exists intercepts cascade ",
+        "drop table if exists intercept cascade ",
         "create table if not exists intercept ( "
         + "  intercept_id serial, "
         + "  wrangler_id varchar(20) not null, "
@@ -57,6 +57,7 @@ public class SchemaCreator {
     public static void dewIt(Connection c) throws SQLException {
         try (Statement s = c.createStatement()) {
             for (String scriptEntry : script) {
+                System.out.println("executing query: " + scriptEntry);
                 s.executeUpdate(scriptEntry);
             }
         }

@@ -17,29 +17,29 @@ import mil.af.flagging.dataload.db.ByRecordDataLoadInterceptDAO;
  */
 public class JDBCRunner extends DbRunner {
 
-    public JDBCRunner(DataSource ds) {
-        super(ds);
+    public JDBCRunner(DataSource ds, int icptCount) {
+        super(ds, icptCount);
     }
-    
+
     @Override
     public void run() {
         try {
-            setupSchema(ds);
-            doJDBCWithOneTransaction(ds);
+            setupSchema();
+            doJDBCWithOneTransaction();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static void setupSchema(DataSource ds) throws SQLException {
-        try (Connection c = ds.getConnection()) {
+    private void setupSchema() throws SQLException {
+        try (Connection c = super.ds.getConnection()) {
             SchemaCreator.dewIt(c);
         }
     }
 
-    private static void doJDBCWithOneTransaction(DataSource ds) throws SQLException {
-        ByRecordDataLoadInterceptDAO dao = new ByRecordDataLoadInterceptDAO(ds);
-        Collection<Intercept> icpts = InterceptGenerator.createIntercepts(1000);
+    private void doJDBCWithOneTransaction() throws SQLException {
+        ByRecordDataLoadInterceptDAO dao = new ByRecordDataLoadInterceptDAO(super.ds);
+        Collection<Intercept> icpts = InterceptGenerator.createIntercepts(super.icptCount);
         dao.storeNewIntercepts(icpts);
     }
 

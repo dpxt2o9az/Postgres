@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         InterceptGenerator.seed(25L);
         DataSource ds = DataSourceBuilder.build(DB_URL, DB_USER, DB_PASS);
-        DbRunner runner = new JPARunner(ds);
+        DbRunner runner = new JPARunner(ds, 5000);
         runner.run();
     }
 

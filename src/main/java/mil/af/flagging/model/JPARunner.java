@@ -16,10 +16,10 @@ import javax.sql.DataSource;
  */
 public class JPARunner extends DbRunner {
 
-    public JPARunner(DataSource ds) {
-        super(ds);
+    public JPARunner(DataSource ds, int icptCount) {
+        super(ds, icptCount);
     }
-    
+
     @Override
     public void run() {
         try {
@@ -29,14 +29,14 @@ public class JPARunner extends DbRunner {
         }
     }
 
-    private static void doJPAWithOneTransaction() {
+    private void doJPAWithOneTransaction() {
         final String PERSISTENCE_UNIT_NAME = "intercept";
         EntityManagerFactory factory;
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
 
         em.getTransaction().begin();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < super.icptCount; i++) {
             Intercept icpt = InterceptGenerator.createIntercept();
             em.persist(icpt);
         }

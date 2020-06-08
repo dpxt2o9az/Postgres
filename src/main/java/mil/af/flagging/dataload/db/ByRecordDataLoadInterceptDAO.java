@@ -75,7 +75,22 @@ public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
                         rfPs.setDouble(3, i.getRfs().get(idx));
                         rfPs.addBatch();
                     }
-                    rfPs.executeUpdate();
+                    rfPs.executeBatch();
+                    for (int idx = 0; idx < i.getPris().size(); idx++) {
+                        priPs.setInt(1, i.getInterceptId());
+                        priPs.setInt(2, idx + 1);
+                        priPs.setDouble(3, i.getPris().get(idx));
+                        priPs.addBatch();
+                    }
+                    priPs.executeBatch();
+                    for (int idx = 0; idx < i.getPds().size(); idx++) {
+                        pdPs.setInt(1, i.getInterceptId());
+                        pdPs.setInt(2, idx + 1);
+                        pdPs.setDouble(3, i.getPds().get(idx));
+                        pdPs.addBatch();
+                    }
+                    pdPs.executeBatch();
+                    
                 }
                 results.add(Result.SUCCESS);
             }

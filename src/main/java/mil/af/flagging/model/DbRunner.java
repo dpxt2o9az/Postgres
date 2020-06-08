@@ -14,9 +14,11 @@ import javax.sql.DataSource;
 public abstract class DbRunner implements Runnable {
 
     protected final DataSource ds;
+    protected final int icptCount;
 
-    public DbRunner(DataSource ds) {
+    public DbRunner(DataSource ds, int icptCount) {
         this.ds = ds;
+        this.icptCount = icptCount;
     }
 
 }
