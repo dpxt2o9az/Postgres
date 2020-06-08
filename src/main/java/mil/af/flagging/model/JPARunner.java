@@ -7,6 +7,7 @@ package mil.af.flagging.model;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.sql.DataSource;
 
@@ -35,14 +36,19 @@ public class JPARunner extends DbRunner {
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
 
-        em.getTransaction().begin();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+                
         for (int i = 0; i < super.icptCount; i++) {
             Intercept icpt = InterceptGenerator.createIntercept();
             em.persist(icpt);
+            if (i % 500 == 0) {
+                em.flush();
+                em.clear();
+            }
         }
 
-        em.getTransaction().commit();
-
+        tx.commit();
         em.close();
     }
 
