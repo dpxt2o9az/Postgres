@@ -50,6 +50,16 @@ public class InterceptGenerator {
         return new Date(randomMillisSinceEpoch);
     }
 
+    public static Collection<Intercept> createInterceptsWithConflicts(int icptCount, int conflictCount) {
+        List<Intercept> icpts = new ArrayList<>(createIntercepts(icptCount));
+        for (int i = 0; i < conflictCount; i++) {
+            Intercept i1 = icpts.get(RNG.nextInt(icpts.size()));
+            Intercept i2 = icpts.get(RNG.nextInt(icpts.size()));
+            i1.setWranglerId(i2.getWranglerId());
+        }
+        return icpts;
+    }
+
     public static Collection<Intercept> createIntercepts(int count) {
         Collection<Intercept> collection = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
@@ -58,7 +68,7 @@ public class InterceptGenerator {
         }
         return collection;
     }
-    
+
     public static Intercept createIntercept() {
         Intercept i = new Intercept();
         i.setElnot(randomString(5));

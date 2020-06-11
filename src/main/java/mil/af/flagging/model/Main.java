@@ -10,9 +10,9 @@ public class Main {
     private static final String DB_USER = "postgres";
 
     public static void main(String[] args) throws Exception {
-        InterceptGenerator.seed(25L);
+        InterceptGenerator.seed(28L);
         DataSource ds = DataSourceBuilder.build(DB_URL, DB_USER, DB_PASS);
-        DbRunner runner = new JDBCRunner(ds, 5000);
+        DbRunner runner = new JDBCRunnerWithConflicts(ds, 5000);
         runner.run();
     }
 

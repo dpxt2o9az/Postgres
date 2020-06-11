@@ -188,8 +188,24 @@ public class Intercept implements Serializable, Comparable<Intercept> {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 89 * hash + Objects.hashCode(this.interceptId);
+        int hash = 5;
+        hash = 71 * hash + Objects.hashCode(this.interceptId);
+        hash = 71 * hash + Objects.hashCode(this.wranglerId);
+        hash = 71 * hash + Objects.hashCode(this.elnot);
+        hash = 71 * hash + Objects.hashCode(this.timeProcessed);
+        hash = 71 * hash + Objects.hashCode(this.intUpTime);
+        hash = 71 * hash + Objects.hashCode(this.intDownTime);
+        hash = 71 * hash + Objects.hashCode(this.rfs);
+        hash = 71 * hash + Objects.hashCode(this.modType);
+        hash = 71 * hash + Objects.hashCode(this.pris);
+        hash = 71 * hash + Objects.hashCode(this.pds);
+        hash = 71 * hash + Objects.hashCode(this.scanType);
+        hash = 71 * hash + Objects.hashCode(this.scanPeriod);
+        hash = 71 * hash + Objects.hashCode(this.latitude);
+        hash = 71 * hash + Objects.hashCode(this.longitude);
+        hash = 71 * hash + Objects.hashCode(this.major);
+        hash = 71 * hash + Objects.hashCode(this.minor);
+        hash = 71 * hash + Objects.hashCode(this.orientation);
         return hash;
     }
 

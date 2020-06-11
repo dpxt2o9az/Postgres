@@ -8,6 +8,8 @@ package mil.af.flagging.dataload.db;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sql.DataSource;
 import mil.af.flagging.model.*;
 
@@ -16,6 +18,8 @@ import mil.af.flagging.model.*;
  * @author Brad
  */
 public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
+
+    private static final Logger LOG = Logger.getLogger(ByRecordDataLoadInterceptDAO.class.getName());
 
     private final Connection conn;
     private final PreparedStatement icptPs;
@@ -50,7 +54,7 @@ public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
 
     @Override
     public Map<Intercept, Result> storeNewIntercepts(Collection<Intercept> icpts) throws SQLException {
-        Map<Intercept, Result> results = new TreeMap<>();
+        Map<Intercept, Result> results = new HashMap<>();
         boolean originalAutoCommit;
         originalAutoCommit = conn.getAutoCommit();
         conn.setAutoCommit(false);
@@ -74,7 +78,9 @@ public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
                 if (rs.next()) {
                     i.setInterceptId(rs.getLong(1));
                 } else {
-                    throw new SQLException("no generated keys");
+                    LOG.log(Level.WARNING, "failed to insert wrangler-id {0}; probable duplicate id", i.getWranglerId());
+                    results.put(i, Result.CONSTRAINT_FAILURE);
+                    continue;
                 }
             }
             for (int idx = 0; idx < i.getRfs().size(); idx++) {
