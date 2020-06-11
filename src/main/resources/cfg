@@ -1,0 +1,4 @@
+db.url=jdbc:postgresql://maelstrom.lan:32769/postgres
+db.username=postgres
+db.password=""
+

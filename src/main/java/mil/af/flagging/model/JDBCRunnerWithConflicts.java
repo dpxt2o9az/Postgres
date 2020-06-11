@@ -25,7 +25,6 @@ public class JDBCRunnerWithConflicts extends DbRunner {
     @Override
     public void run() {
         try {
-            setupSchema();
             doJDBCWithOneTransaction();
         } catch (SQLException e) {
             throw new RuntimeException(e);
