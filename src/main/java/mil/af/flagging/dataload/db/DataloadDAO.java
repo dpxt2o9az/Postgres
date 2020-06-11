@@ -7,6 +7,7 @@ package mil.af.flagging.dataload.db;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Map;
 import mil.af.flagging.model.Intercept;
 
 /**
@@ -14,6 +15,6 @@ import mil.af.flagging.model.Intercept;
  * @author Brad
  */
 public interface DataloadDAO {
-    Collection<Result> storeNewIntercept(Intercept icpt) throws SQLException;
-    Collection<Result> storeNewIntercepts(Collection<Intercept> icpts) throws SQLException;
+    Result storeNewIntercept(Intercept icpt) throws SQLException;
+    Map<Intercept, Result> storeNewIntercepts(Collection<Intercept> icpts) throws SQLException;
 }

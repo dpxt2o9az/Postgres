@@ -5,11 +5,11 @@ import java.util.*;
 import javax.persistence.*;
 
 @Entity
-public class Intercept implements Serializable {
+public class Intercept implements Serializable, Comparable<Intercept> {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int interceptId;
+    private Long interceptId;
     @Column(unique = true)
     private String wranglerId;
     private String elnot;
@@ -50,11 +50,11 @@ public class Intercept implements Serializable {
     private Double minor;
     private Double orientation;
 
-    public int getInterceptId() {
+    public Long getInterceptId() {
         return interceptId;
     }
 
-    public void setInterceptId(int interceptId) {
+    public void setInterceptId(Long interceptId) {
         this.interceptId = interceptId;
     }
 
@@ -188,8 +188,8 @@ public class Intercept implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 29 * hash + this.interceptId;
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.interceptId);
         return hash;
     }
 
@@ -205,15 +205,21 @@ public class Intercept implements Serializable {
             return false;
         }
         final Intercept other = (Intercept) obj;
-        if (this.interceptId != other.interceptId) {
+        if (!Objects.equals(this.interceptId, other.interceptId)) {
             return false;
         }
         return true;
     }
 
+
     @Override
     public String toString() {
         return super.toString(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int compareTo(Intercept o) {
+        return Long.compare(this.interceptId, o.interceptId);
     }
     
     

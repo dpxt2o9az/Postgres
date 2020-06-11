@@ -21,7 +21,7 @@ public class SchemaCreator {
         + "  major numeric not null, "
         + "  minor numeric not null, "
         + "  orientation numeric not null,"
-        + "  CONSTRAINT unique_data UNIQUE (wrangler_id), "
+        + "  CONSTRAINT unique_wrangler_id UNIQUE (wrangler_id), "
         + "  CONSTRAINT intercept_pk PRIMARY KEY (intercept_id) "
         + ")",
         "alter sequence intercept_intercept_id_seq restart 1024",
@@ -30,6 +30,7 @@ public class SchemaCreator {
         + "  intercept_id int not null, "
         + "  sequence int not null, "
         + "  value numeric not null, "
+        + "  PRIMARY KEY ( intercept_id, sequence ),"
         + "  CONSTRAINT intercept_rf_fk "
         + "    FOREIGN KEY (intercept_id) REFERENCES intercept (intercept_id) "
         + "    ON DELETE CASCADE "
@@ -39,6 +40,7 @@ public class SchemaCreator {
         + "  intercept_id int not null, "
         + "  sequence int not null, "
         + "  value numeric not null, "
+        + "  PRIMARY KEY ( intercept_id, sequence ), "
         + "  CONSTRAINT intercept_pri_fk "
         + "    FOREIGN KEY (intercept_id) REFERENCES intercept (intercept_id) "
         + "    ON DELETE CASCADE "
@@ -48,6 +50,7 @@ public class SchemaCreator {
         + "  intercept_id int not null, "
         + "  sequence int not null, "
         + "  value numeric not null, "
+        + "  PRIMARY KEY ( intercept_id, sequence ), "
         + "  CONSTRAINT intercept_pd_fk "
         + "    FOREIGN KEY (intercept_id) REFERENCES intercept (intercept_id) "
         + "    ON DELETE CASCADE "

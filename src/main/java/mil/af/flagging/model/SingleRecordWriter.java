@@ -46,33 +46,33 @@ public class SingleRecordWriter {
         this.pdPs = conn.prepareStatement(PD_RECORD_INSERTION);
     }
 
-    public Integer writeRecord(Intercept i) throws SQLException {
-        Integer key = null;
+    public Long writeRecord(Intercept i) throws SQLException {
+        Long key = null;
         int col = 1;
         iPs.setString(col++, i.getWranglerId());
         iPs.setString(col++, i.getElnot());
         int affected = iPs.executeUpdate();
         try (ResultSet rs = iPs.getGeneratedKeys()) {
             if (rs.next()) {
-                key = rs.getInt(1);
+                key = rs.getLong(1);
                 i.setInterceptId(key);
                 for (int index = 0; index < i.getRfs().size(); index++) {
                     col = 1;
-                    rfPs.setInt(col++, i.getInterceptId());
+                    rfPs.setLong(col++, i.getInterceptId());
                     rfPs.setInt(col++, index);
                     rfPs.setDouble(col++, i.getRfs().get(index));
                     rfPs.executeUpdate();
                 }
                 for (int index = 0; index < i.getPris().size(); index++) {
                     col = 1;
-                    priPs.setInt(col++, i.getInterceptId());
+                    priPs.setLong(col++, i.getInterceptId());
                     priPs.setInt(col++, index);
                     priPs.setDouble(col++, i.getPris().get(index));
                     priPs.executeUpdate();
                 }
                 for (int index = 0; index < i.getPds().size(); index++) {
                     col = 1;
-                    pdPs.setInt(col++, i.getInterceptId());
+                    pdPs.setLong(col++, i.getInterceptId());
                     pdPs.setInt(col++, index);
                     pdPs.setDouble(col++, i.getPds().get(index));
                     pdPs.executeUpdate();

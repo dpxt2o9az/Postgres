@@ -37,18 +37,14 @@ public class JPARunner extends DbRunner {
         EntityManager em = factory.createEntityManager();
 
         EntityTransaction tx = em.getTransaction();
-        tx.begin();
-                
+
         for (int i = 0; i < super.icptCount; i++) {
+            tx.begin();
             Intercept icpt = InterceptGenerator.createIntercept();
             em.persist(icpt);
-            if (i % 500 == 0) {
-                em.flush();
-                em.clear();
-            }
+            tx.commit();
         }
 
-        tx.commit();
         em.close();
     }
 
