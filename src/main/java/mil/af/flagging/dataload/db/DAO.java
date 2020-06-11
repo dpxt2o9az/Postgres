@@ -11,11 +11,13 @@ import javax.sql.DataSource;
  *
  * @author Brad
  */
-public abstract class DAO {
+public abstract class DAO implements AutoCloseable {
     
     protected final DataSource ds;
     
     public DAO(DataSource ds) {
         this.ds = ds;
     }
+    
+    
 }

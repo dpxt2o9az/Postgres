@@ -5,6 +5,7 @@
  */
 package mil.af.flagging.model;
 
+import mil.af.flagging.dataload.db.SchemaCreator;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package mil.af.flagging.model;
+package mil.af.flagging.dataload.db;
 
 import java.sql.*;
 

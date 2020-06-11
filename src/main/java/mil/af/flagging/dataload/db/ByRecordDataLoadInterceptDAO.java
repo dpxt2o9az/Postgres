@@ -5,20 +5,11 @@
  */
 package mil.af.flagging.dataload.db;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.sql.*;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import javax.sql.DataSource;
-import mil.af.flagging.model.Intercept;
-import mil.af.flagging.model.SingleRecordWriter;
+import mil.af.flagging.model.*;
 
 /**
  *
@@ -41,6 +32,7 @@ public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
         pdPs = conn.prepareStatement(SingleRecordWriter.PD_RECORD_INSERTION);
     }
 
+    @Override
     public void close() {
         JDBCUtil.closeQuietly(pdPs);
         JDBCUtil.closeQuietly(priPs);

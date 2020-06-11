@@ -1,9 +1,10 @@
-package mil.af.flagging.model;
+package mil.af.flagging.dataload.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import mil.af.flagging.model.Intercept;
 
 public class SingleRecordWriter {
 
