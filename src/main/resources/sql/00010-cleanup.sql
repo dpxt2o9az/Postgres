@@ -1,1 +1,1 @@
-drop table if exists intercept cascade;
+drop table if exists intercepts cascade;

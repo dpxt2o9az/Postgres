@@ -1,5 +1,5 @@
 -- intercepts parent table
-create table if not exists intercept ( 
+create table if not exists intercepts ( 
    intercept_id serial, 
    wrangler_id varchar(20) not null, 
    elnot varchar(5) not null, 
@@ -19,7 +19,7 @@ create table if not exists intercept (
  );
 
 -- because... magic
-alter sequence intercept_intercept_id_seq restart 1024;
+alter sequence intercepts_intercept_id_seq restart 1024;
 
 -- intercept-rfs children
 drop table if exists intercept_rfs;
@@ -29,7 +29,7 @@ create table if not exists intercept_rfs (
    value numeric not null, 
    PRIMARY KEY ( intercept_id, sequence ),
    CONSTRAINT intercept_rf_fk 
-     FOREIGN KEY (intercept_id) REFERENCES intercept (intercept_id) 
+     FOREIGN KEY (intercept_id) REFERENCES intercepts (intercept_id) 
      ON DELETE CASCADE 
  );
 
@@ -41,7 +41,7 @@ create table if not exists intercept_pris (
    value numeric not null, 
    PRIMARY KEY ( intercept_id, sequence ), 
    CONSTRAINT intercept_pri_fk 
-     FOREIGN KEY (intercept_id) REFERENCES intercept (intercept_id) 
+     FOREIGN KEY (intercept_id) REFERENCES intercepts (intercept_id) 
      ON DELETE CASCADE 
  );
 
@@ -53,6 +53,6 @@ create table if not exists intercept_pds (
    value numeric not null, 
    PRIMARY KEY ( intercept_id, sequence ), 
    CONSTRAINT intercept_pd_fk 
-     FOREIGN KEY (intercept_id) REFERENCES intercept (intercept_id) 
+     FOREIGN KEY (intercept_id) REFERENCES intercepts (intercept_id) 
      ON DELETE CASCADE 
 );

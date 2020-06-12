@@ -5,8 +5,8 @@ import java.sql.*;
 public class SchemaCreator {
 
     static String[] script = {
-        "drop table if exists intercept cascade ",
-        "create table if not exists intercept ( "
+        "drop table if exists intercepts cascade ",
+        "create table if not exists intercepts ( "
         + "  intercept_id serial, "
         + "  wrangler_id varchar(20) not null, "
         + "  elnot varchar(5) not null, "
@@ -24,7 +24,7 @@ public class SchemaCreator {
         + "  CONSTRAINT unique_wrangler_id UNIQUE (wrangler_id), "
         + "  CONSTRAINT intercept_pk PRIMARY KEY (intercept_id) "
         + ")",
-        "alter sequence intercept_intercept_id_seq restart 1024",
+        "alter sequence intercepts_intercept_id_seq restart 1024",
         "drop table if exists intercept_rfs",
         "create table if not exists intercept_rfs ( "
         + "  intercept_id int not null, "
@@ -32,7 +32,7 @@ public class SchemaCreator {
         + "  value numeric not null, "
         + "  PRIMARY KEY ( intercept_id, sequence ),"
         + "  CONSTRAINT intercept_rf_fk "
-        + "    FOREIGN KEY (intercept_id) REFERENCES intercept (intercept_id) "
+        + "    FOREIGN KEY (intercept_id) REFERENCES intercepts (intercept_id) "
         + "    ON DELETE CASCADE "
         + ")",
         "drop table if exists intercept_pris",
@@ -42,7 +42,7 @@ public class SchemaCreator {
         + "  value numeric not null, "
         + "  PRIMARY KEY ( intercept_id, sequence ), "
         + "  CONSTRAINT intercept_pri_fk "
-        + "    FOREIGN KEY (intercept_id) REFERENCES intercept (intercept_id) "
+        + "    FOREIGN KEY (intercept_id) REFERENCES intercepts (intercept_id) "
         + "    ON DELETE CASCADE "
         + ")",
         "drop table if exists intercept_pds",
@@ -52,7 +52,7 @@ public class SchemaCreator {
         + "  value numeric not null, "
         + "  PRIMARY KEY ( intercept_id, sequence ), "
         + "  CONSTRAINT intercept_pd_fk "
-        + "    FOREIGN KEY (intercept_id) REFERENCES intercept (intercept_id) "
+        + "    FOREIGN KEY (intercept_id) REFERENCES intercepts (intercept_id) "
         + "    ON DELETE CASCADE "
         + ")"
     };
