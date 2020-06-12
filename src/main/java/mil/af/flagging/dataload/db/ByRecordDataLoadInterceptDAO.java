@@ -5,6 +5,8 @@
  */
 package mil.af.flagging.dataload.db;
 
+import mil.af.flagging.db.Result;
+import mil.af.flagging.db.JDBCUtil;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;

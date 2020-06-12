@@ -3,22 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mil.af.flagging.model;
+package mil.af.flagging.dataload.db;
 
-import mil.af.flagging.dataload.db.SchemaCreator;
+import mil.af.flagging.db.SchemaCreator;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
 import javax.sql.DataSource;
 import mil.af.flagging.dataload.db.ByRecordDataLoadInterceptDAO;
+import mil.af.flagging.model.Intercept;
+import mil.af.flagging.model.InterceptGenerator;
 
 /**
  *
  * @author Brad
  */
-public class JDBCRunner extends DbRunner {
+public class JDBCInterceptInserter extends InterceptInserter {
 
-    public JDBCRunner(DataSource ds, int icptCount) {
+    public JDBCInterceptInserter(DataSource ds, int icptCount) {
         super(ds, icptCount);
     }
 

@@ -5,6 +5,7 @@
  */
 package mil.af.flagging.dataload.db;
 
+import mil.af.flagging.db.Result;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Map;

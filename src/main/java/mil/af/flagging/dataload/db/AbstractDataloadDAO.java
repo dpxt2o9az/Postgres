@@ -5,6 +5,7 @@
  */
 package mil.af.flagging.dataload.db;
 
+import mil.af.flagging.db.DAO;
 import javax.sql.DataSource;
 
 /**

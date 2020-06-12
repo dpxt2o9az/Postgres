@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mil.af.flagging.model;
+package mil.af.flagging.dataload.db;
 
 import javax.sql.DataSource;
 
@@ -11,12 +11,12 @@ import javax.sql.DataSource;
  *
  * @author Brad
  */
-public abstract class DbRunner implements Runnable {
+public abstract class InterceptInserter implements Runnable {
 
     protected final DataSource ds;
     protected final int icptCount;
 
-    public DbRunner(DataSource ds, int icptCount) {
+    public InterceptInserter(DataSource ds, int icptCount) {
         this.ds = ds;
         this.icptCount = icptCount;
     }

@@ -3,21 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mil.af.flagging.model;
+package mil.af.flagging.dataload.db;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.sql.DataSource;
+import mil.af.flagging.model.Intercept;
+import mil.af.flagging.model.InterceptGenerator;
 
 /**
  *
  * @author Brad
  */
-public class JPARunner extends DbRunner {
+public class JPAInterceptInserter extends InterceptInserter {
 
-    public JPARunner(DataSource ds, int icptCount) {
+    public JPAInterceptInserter(DataSource ds, int icptCount) {
         super(ds, icptCount);
     }
 

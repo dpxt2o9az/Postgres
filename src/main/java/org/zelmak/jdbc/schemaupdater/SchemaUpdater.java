@@ -66,7 +66,7 @@ public class SchemaUpdater {
                 ps.setString(1, update.getName());
                 ps.setString(2, text);
                 ps.executeUpdate();
-                LOG.log(Level.INFO, "applied {1} as {0}", new Object[]{update.getName(), text});
+                LOG.log(Level.INFO, "applied {0}", new Object[]{update.getName()});
             }
         }
     }
