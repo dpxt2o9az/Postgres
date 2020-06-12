@@ -9,6 +9,8 @@ Without this configuration present, some functionality in the IDE may be limited
     <config-data xmlns="http://www.netbeans.org/ns/maven-config-data/1">
         <configurations>
             <configuration id="SchemaUpdater" profiles=""/>
+            <configuration id="Data Loader" profiles=""/>
+            <configuration id="AOI Assigner" profiles=""/>
         </configurations>
     </config-data>
 </project-shared-configuration>
