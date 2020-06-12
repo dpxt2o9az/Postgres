@@ -79,6 +79,7 @@ public class InterceptGenerator {
         i.setIntUpTime(between(sixMonthsAgo, now));
         i.setIntDownTime(between(i.getIntUpTime(), now));
 
+        i.setCountryCode("AA");
         i.setLatitude(RNG.nextDouble() * 360 - 180);
         i.setLongitude(RNG.nextDouble() * 180 - 90);
         i.setMajor(RNG.nextDouble() * 100);

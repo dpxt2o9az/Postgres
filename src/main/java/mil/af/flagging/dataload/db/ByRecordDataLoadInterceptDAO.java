@@ -22,12 +22,14 @@ import mil.af.flagging.model.*;
 public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
 
     private static final Logger LOG = Logger.getLogger(ByRecordDataLoadInterceptDAO.class.getName());
+    private static final String INSERT_AOI_REQ = "insert into idb_states ( intercept_id, flow_control, last_modified ) values ( ?, 'AOI-REQ', DEFAULT )";
 
     private final Connection conn;
     private final PreparedStatement icptPs;
     private final PreparedStatement rfPs;
     private final PreparedStatement priPs;
     private final PreparedStatement pdPs;
+    private final PreparedStatement statePs;
 
     public ByRecordDataLoadInterceptDAO(DataSource ds) throws SQLException {
         super(ds);
@@ -36,6 +38,7 @@ public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
         rfPs = conn.prepareStatement(SingleRecordWriter.RF_RECORD_INSERTION);
         priPs = conn.prepareStatement(SingleRecordWriter.PRI_RECORD_INSERTION);
         pdPs = conn.prepareStatement(SingleRecordWriter.PD_RECORD_INSERTION);
+        statePs = conn.prepareStatement(INSERT_AOI_REQ);
     }
 
     @Override
@@ -70,6 +73,7 @@ public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
             icptPs.setTimestamp(col++, sqlTimestampFrom(i.getTimeProcessed()));
             icptPs.setTimestamp(col++, sqlTimestampFrom(i.getIntUpTime()));
             icptPs.setTimestamp(col++, sqlTimestampFrom(i.getIntDownTime()));
+            icptPs.setString(col++, i.getCountryCode());
             icptPs.setDouble(col++, i.getLatitude());
             icptPs.setDouble(col++, i.getLongitude());
             icptPs.setDouble(col++, i.getMajor());
@@ -106,6 +110,10 @@ public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
                 pdPs.addBatch();
             }
             pdPs.executeBatch();
+
+            statePs.setLong(1, i.getInterceptId());
+            statePs.executeUpdate();
+            
             results.put(i, Result.SUCCESS);
         }
 

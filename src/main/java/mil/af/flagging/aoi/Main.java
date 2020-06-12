@@ -19,7 +19,7 @@ import org.zelmak.jdbc.schemaupdater.DatabaseSettings;
 public class Main {
 
     private static final String MERGE_QUERY
-            = "insert into intercept_aois as a"
+            = "insert into intercept_aois "
             + " (select intercept_id, listagg(aoi_code, ';') within group (order by aoi_code) || ';W1' aoi_code "
             + "  from idb_states "
             + "  join intercepts "
@@ -27,7 +27,7 @@ public class Main {
             + "  join aoi_country_codes "
             + "    using(country_code) "
             + "  where flow_control = ? "
-            + "  group by intercept_id) as b "
+            + "  group by intercept_id) "
             + "  on (a.intercept_id = b.intercept_id) "
             + "  when matched "
             + "    then update set aoi_code = b.aoi_code "

@@ -44,6 +44,7 @@ public class Intercept implements Serializable, Comparable<Intercept> {
     private Double scanPeriod;
 
     // location fields
+    private String countryCode;
     private Double latitude;
     private Double longitude;
     private Double major;
@@ -144,6 +145,14 @@ public class Intercept implements Serializable, Comparable<Intercept> {
 
     public void setScanPeriod(Double scanPeriod) {
         this.scanPeriod = scanPeriod;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
     public Double getLatitude() {

@@ -9,6 +9,7 @@ create table if not exists intercepts (
    time_process timestamp not null, 
    int_up_time timestamp not null, 
    int_down_time timestamp not null, 
+   country_code varchar(2) not null,
    latitude numeric not null, 
    longitude numeric not null, 
    major numeric not null, 
