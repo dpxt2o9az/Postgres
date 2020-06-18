@@ -14,7 +14,7 @@ public class Main {
         DataSource ds = DataSourceBuilder.build(db.url, db.username, db.password);
         InterceptGenerator.seed(28L);
 //        for (int i = 0; i < 100; i++) {
-            InterceptInserter runner = new JDBCInterceptInserterWithConflicts(ds, 5000);
+            InterceptInserter runner = new JDBCInterceptInserterWithConflicts(ds, 7300);
             runner.run();
 //        }
     }
