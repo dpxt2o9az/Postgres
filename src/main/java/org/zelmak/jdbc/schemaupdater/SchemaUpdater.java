@@ -51,7 +51,7 @@ public class SchemaUpdater {
         try (PreparedStatement ps = conn.prepareStatement("insert into schema_revisions ( revision_id, file_name, file_contents ) values ( DEFAULT, ?, ? )");
                 Statement st = conn.createStatement()) {
             for (File update : schemaUpdates) {
-                String text = Files.readString(update.toPath());
+                String text = Files.readAllLines(update.toPath()).stream().collect(Collectors.joining("\n"));
                 for (String command : splitOnGo(text)) {
                     try {
                         LOG.log(Level.INFO, "attempting to apply command {0}", command);

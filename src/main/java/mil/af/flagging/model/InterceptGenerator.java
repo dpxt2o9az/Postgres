@@ -62,7 +62,7 @@ public class InterceptGenerator {
 
     public static Collection<Intercept> createIntercepts(int count) {
         Collection<Intercept> collection = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < count; i++) {
             Intercept icpt = InterceptGenerator.createIntercept();
             collection.add(icpt);
         }
