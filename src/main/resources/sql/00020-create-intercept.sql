@@ -22,6 +22,11 @@ create table if not exists intercepts (
 -- because... magic
 alter sequence intercepts_intercept_id_seq restart 1024;
 
+comment on column intercepts.intercept_id is 'PK';
+comment on column intercepts.wrangler_id is 'psuedo-key; must be unique';
+
+create index icpt_elnot on intercepts ( elnot );
+
 -- intercept-rfs children
 drop table if exists intercept_rfs;
 create table if not exists intercept_rfs ( 

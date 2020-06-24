@@ -4,7 +4,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <class>mil.af.flagging.model.Intercept</class>
         <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://maelstrom.lan:32769/postgres"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://loki.lan:5432/postgres"/>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.user" value="postgres"/>
             <property name="javax.persistence.jdbc.password" value=""/>

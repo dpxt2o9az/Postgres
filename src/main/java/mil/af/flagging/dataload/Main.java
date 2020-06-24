@@ -12,11 +12,11 @@ public class Main {
     public static void main(String[] args) throws Exception {
         DatabaseSettings db = DatabaseSettings.fromPropertiesFile(args[0]);
         DataSource ds = DataSourceBuilder.build(db.url, db.username, db.password);
-        InterceptGenerator.seed(28L);
-//        for (int i = 0; i < 100; i++) {
+        InterceptGenerator.seed(1L);
+        for (int i = 0; i < 10; i++) {
             InterceptInserter runner = new JDBCInterceptInserterWithConflicts(ds, 7300);
             runner.run();
-//        }
+        }
     }
 
 }

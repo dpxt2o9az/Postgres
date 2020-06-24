@@ -1,4 +1,4 @@
-db.url=jdbc:postgresql://maelstrom.lan:32769/postgres
+db.url=jdbc:postgresql://loki.lan:5432/postgres
 db.username=postgres
 db.password=""
 
