@@ -19,10 +19,6 @@ select aoi_code, string_agg(country_code, ';' order by country_code) from (
   group by aoi_code 
 ;
   
-      group by country_code;
-   
-
-
 explain analyze with aaa ( intercept_id, aoi_code ) as (
   select intercept_id, aoi_code from intercepts
     join aoi_country_codes
