@@ -6,27 +6,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class InterceptGenerator {
 
-    private static Random RNG = new Random();
+    private final RandomUtils rng = new RandomUtils();
 
-    public static void seed(long seed) {
-        RNG = new Random(seed);
-    }
+    private final List<Country> countries;
 
-    public static String randomString(int length) {
-        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        char[] array = new char[length];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = chars.charAt(RNG.nextInt(chars.length()));
-        }
-        return String.valueOf(array);
-    }
-
-    public static List<Double> randomDoubleList(int length) {
-        List<Double> list = new ArrayList<>();
-        for (int i = 0; i < length; i++) {
-            list.add(RNG.nextDouble());
-        }
-        return list;
+    public InterceptGenerator(Collection<Country> countries) {
+        this.countries = new ArrayList<>(countries);
     }
 
     public static Instant between(Instant startInclusive, Instant endExclusive) {
@@ -50,28 +35,28 @@ public class InterceptGenerator {
         return new Date(randomMillisSinceEpoch);
     }
 
-    public static Collection<Intercept> createInterceptsWithConflicts(int icptCount, int conflictCount) {
+    public Collection<Intercept> createInterceptsWithConflicts(int icptCount, int conflictCount) {
         List<Intercept> icpts = new ArrayList<>(createIntercepts(icptCount));
         for (int i = 0; i < conflictCount; i++) {
-            Intercept i1 = icpts.get(RNG.nextInt(icpts.size()));
-            Intercept i2 = icpts.get(RNG.nextInt(icpts.size()));
+            Intercept i1 = icpts.get(rng.nextInt(icpts.size()));
+            Intercept i2 = icpts.get(rng.nextInt(icpts.size()));
             i1.setWranglerId(i2.getWranglerId());
         }
         return icpts;
     }
 
-    public static Collection<Intercept> createIntercepts(int count) {
+    public Collection<Intercept> createIntercepts(int count) {
         Collection<Intercept> collection = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            Intercept icpt = InterceptGenerator.createIntercept();
+            Intercept icpt = createIntercept();
             collection.add(icpt);
         }
         return collection;
     }
 
-    public static Intercept createIntercept() {
+    public Intercept createIntercept() {
         Intercept i = new Intercept();
-        i.setElnot(randomString(5));
+        i.setElnot(rng.randomString(5));
 
         Date now = new Date();
         Date sixMonthsAgo = Date.from(ZonedDateTime.now(ZoneOffset.UTC).minusMonths(6).toInstant());
@@ -79,22 +64,22 @@ public class InterceptGenerator {
         i.setIntUpTime(between(sixMonthsAgo, now));
         i.setIntDownTime(between(i.getIntUpTime(), now));
 
-        i.setCountryCode("AA");
-        i.setLatitude(RNG.nextDouble() * 360 - 180);
-        i.setLongitude(RNG.nextDouble() * 180 - 90);
-        i.setMajor(RNG.nextDouble() * 100);
-        i.setMinor(RNG.nextDouble() * i.getMajor());
-        i.setOrientation(RNG.nextDouble() * 180);
+        i.setCountryCode(countries.get(rng.nextInt(countries.size())).countryCode);
+        i.setLatitude(rng.nextDouble() * 360 - 180);
+        i.setLongitude(rng.nextDouble() * 180 - 90);
+        i.setMajor(rng.nextDouble() * 100);
+        i.setMinor(rng.nextDouble() * i.getMajor());
+        i.setOrientation(rng.nextDouble() * 180);
 
-        i.setModType(randomString(2));
-        i.setRfs(randomDoubleList(RNG.nextInt(10) + 1));
-        i.setPris(randomDoubleList(RNG.nextInt(20) + 1));
-        i.setPds(randomDoubleList(RNG.nextInt(5) + 1));
+        i.setModType(rng.randomString(2));
+        i.setRfs(rng.randomDoubleList(rng.nextInt(10) + 1));
+        i.setPris(rng.randomDoubleList(rng.nextInt(20) + 1));
+        i.setPds(rng.randomDoubleList(rng.nextInt(5) + 1));
 
-        i.setScanType(randomString(2));
-        i.setScanPeriod(RNG.nextDouble());
+        i.setScanType(rng.randomString(2));
+        i.setScanPeriod(rng.nextDouble());
 
-        i.setWranglerId(randomString(10));
+        i.setWranglerId(rng.randomString(10));
 
         return i;
     }
