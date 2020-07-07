@@ -19,7 +19,7 @@ create or replace view intercept_dataload_rules as
       idrt.bbs,
       idrt.heardcount,
       idrt.heardcount_threshold,
-      el.email_list email_list,
+      el.email_list email_list
     from intercept_dataload_rules_table idrt
       left outer join
         ( select rule_id, string_agg(upper(email_address), ',' order by email_address) email_list
