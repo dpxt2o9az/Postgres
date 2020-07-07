@@ -1,6 +1,6 @@
 create table rule_actions (
     intercept_dataload_rule_id integer not null,
-    epoch timestamp not null default current_timestamp,
+    epoch timestamp not null default current_timestamp
 );
 
 create table intercept_dataload_rules_table (
