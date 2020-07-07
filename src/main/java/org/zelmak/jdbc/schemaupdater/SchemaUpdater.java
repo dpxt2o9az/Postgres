@@ -12,6 +12,40 @@ public class SchemaUpdater {
 
     private static final Logger LOG = Logger.getLogger(SchemaUpdater.class.getName());
 
+    private static final String DROP_ALL_TABLES
+            = "DO $$ "
+            + "DECLARE "
+            + "    r record; "
+            + "BEGIN "
+            + "    FOR r IN SELECT quote_ident(tablename) AS tablename, quote_ident(schemaname) AS schemaname FROM pg_tables WHERE schemaname = 'public' "
+            + "    loop "
+            + "      BEGIN "
+            + "        RAISE INFO 'Dropping table %.%', r.schemaname, r.tablename; "
+            + "        EXECUTE format('DROP TABLE IF EXISTS %I.%I CASCADE', r.schemaname, r.tablename); "
+            + "        exception "
+            + "          when others then "
+            + "            raise notice 'skipping %.%', quote_ident(r.schemaname), quote_ident(r.tablename); "
+            + "          end; "
+            + "    END LOOP; "
+            + "end $$;";
+
+    private static final String CREATE_AUDIT_TABLE
+            = "CREATE TABLE IF NOT EXISTS SCHEMA_REVISIONS ("
+            + "  revision_id SERIAL, "
+            + "  file_name varchar(256) NOT NULL, "
+            + "  file_contents TEXT NOT NULL,"
+            + "  PRIMARY KEY ( revision_id )"
+            + ")";
+    
+    private static final String INSERT_AUDIT_RECORD
+            = "insert into schema_revisions "
+            + "  ( revision_id, file_name, file_contents ) "
+            + "  values "
+            + "  ( DEFAULT, ?, ? )";
+    
+    private static final String FETCH_PREVIOUS_UPDATES
+            = "SELECT File_name FROM Schema_Revisions order by REVISION_ID";
+
     private final Connection conn;
     private final String _schemaDirectory;
 
@@ -28,7 +62,6 @@ public class SchemaUpdater {
 
     }
 
-
     public SchemaUpdater(Connection conn, String schemaDirectory) {
         this.conn = conn;
         _schemaDirectory = schemaDirectory;
@@ -39,6 +72,7 @@ public class SchemaUpdater {
     }
 
     public void updateSchema() throws SQLException, IOException {
+        maybeCleanDatabase();
         maybeCreateAuditTable();
         Collection<String> previousUpdates = getPreviousSchemaUpdates();
 
@@ -48,7 +82,7 @@ public class SchemaUpdater {
 
         schemaUpdates = schemaUpdates.stream().filter(f -> !previousUpdates.contains(f.getName())).collect(Collectors.toList());
 
-        try (PreparedStatement ps = conn.prepareStatement("insert into schema_revisions ( revision_id, file_name, file_contents ) values ( DEFAULT, ?, ? )");
+        try (PreparedStatement ps = conn.prepareStatement(INSERT_AUDIT_RECORD);
                 Statement st = conn.createStatement()) {
             for (File update : schemaUpdates) {
                 String text = Files.readAllLines(update.toPath()).stream().collect(Collectors.joining("\n"));
@@ -67,6 +101,32 @@ public class SchemaUpdater {
                 ps.setString(2, text);
                 ps.executeUpdate();
                 LOG.log(Level.INFO, "applied {0}", new Object[]{update.getName()});
+            }
+        }
+    }
+
+    private void maybeCleanDatabase() throws SQLException {
+        if (System.getProperty("DELETE.ALL.THE.TABLES") != null) {
+            try (Statement st = conn.createStatement()) {
+                st.executeUpdate(DROP_ALL_TABLES);
+            }
+        }
+    }
+
+    private void maybeCreateAuditTable() throws SQLException {
+        try (Statement st = conn.createStatement()) {
+            st.executeUpdate(CREATE_AUDIT_TABLE);
+        }
+    }
+
+    private Set<String> getPreviousSchemaUpdates() throws SQLException {
+        try (Statement st = conn.createStatement()) {
+            try (ResultSet rs = st.executeQuery(FETCH_PREVIOUS_UPDATES)) {
+                Set<String> set = new HashSet<>();
+                while (rs.next()) {
+                    set.add(rs.getString(1));
+                }
+                return set;
             }
         }
     }
@@ -90,31 +150,6 @@ public class SchemaUpdater {
                 .collect(Collectors.toList());
 
         return materialized;
-    }
-
-    private void maybeCreateAuditTable() throws SQLException {
-        final String createAuditTable = "CREATE TABLE IF NOT EXISTS SCHEMA_REVISIONS ("
-                + "  revision_id SERIAL, "
-                + "  file_name varchar(256) NOT NULL, "
-                + "  file_contents TEXT NOT NULL,"
-                + "  PRIMARY KEY ( revision_id )"
-                + ")";
-        try (Statement st = conn.createStatement()) {
-            st.executeUpdate(createAuditTable);
-        }
-    }
-
-    private Set<String> getPreviousSchemaUpdates() throws SQLException {
-        final String previousUpdatesQuery = "SELECT File_name FROM Schema_Revisions order by REVISION_ID";
-        try (Statement st = conn.createStatement()) {
-            try (ResultSet rs = st.executeQuery(previousUpdatesQuery)) {
-                Set<String> set = new HashSet<>();
-                while (rs.next()) {
-                    set.add(rs.getString(1));
-                }
-                return set;
-            }
-        }
     }
 
 }

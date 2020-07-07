@@ -33,8 +33,8 @@ public class Main {
             aDao.storeAOI(aoi);
         }
 
-        for (int i = 0; i < 100; i++) {
-            InterceptInserter runner = new JDBCInterceptInserterWithConflicts(ds, countries, 7300);
+        for (int i = 0; i < 42; i++) {
+            InterceptInserter runner = new JDBCInterceptInserterWithConflicts(ds, countries, 10000);
             runner.run();
         }
     }
