@@ -47,10 +47,13 @@ public class Intercept implements Serializable, Comparable<Intercept> {
     private String countryCode;
     private Double latitude;
     private Double longitude;
-    private Double major;
-    private Double minor;
+    private Double semiMajor;
+    private Double semiMinor;
     private Double orientation;
+    private String readOutStation;
 
+    private boolean processed;
+    
     public Long getInterceptId() {
         return interceptId;
     }
@@ -171,20 +174,20 @@ public class Intercept implements Serializable, Comparable<Intercept> {
         this.longitude = longitude;
     }
 
-    public Double getMajor() {
-        return major;
+    public Double getSemiMajor() {
+        return semiMajor;
     }
 
-    public void setMajor(Double major) {
-        this.major = major;
+    public void setSemiMajor(Double semiMajor) {
+        this.semiMajor = semiMajor;
     }
 
-    public Double getMinor() {
-        return minor;
+    public Double getSemiMinor() {
+        return semiMinor;
     }
 
-    public void setMinor(Double minor) {
-        this.minor = minor;
+    public void setSemiMinor(Double semiMinor) {
+        this.semiMinor = semiMinor;
     }
 
     public Double getOrientation() {
@@ -193,6 +196,22 @@ public class Intercept implements Serializable, Comparable<Intercept> {
 
     public void setOrientation(Double orientation) {
         this.orientation = orientation;
+    }
+
+    public String getReadOutStation() {
+        return readOutStation;
+    }
+
+    public void setReadOutStation(String readOutStation) {
+        this.readOutStation = readOutStation;
+    }
+
+    public boolean isProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(boolean processed) {
+        this.processed = processed;
     }
 
     @Override
@@ -212,8 +231,8 @@ public class Intercept implements Serializable, Comparable<Intercept> {
         hash = 71 * hash + Objects.hashCode(this.scanPeriod);
         hash = 71 * hash + Objects.hashCode(this.latitude);
         hash = 71 * hash + Objects.hashCode(this.longitude);
-        hash = 71 * hash + Objects.hashCode(this.major);
-        hash = 71 * hash + Objects.hashCode(this.minor);
+        hash = 71 * hash + Objects.hashCode(this.semiMajor);
+        hash = 71 * hash + Objects.hashCode(this.semiMinor);
         hash = 71 * hash + Objects.hashCode(this.orientation);
         return hash;
     }

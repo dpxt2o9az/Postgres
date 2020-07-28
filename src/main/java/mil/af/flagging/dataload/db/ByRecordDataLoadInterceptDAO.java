@@ -22,7 +22,10 @@ import mil.af.flagging.model.*;
 public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
 
     private static final Logger LOG = Logger.getLogger(ByRecordDataLoadInterceptDAO.class.getName());
-    private static final String INSERT_AOI_REQ = "insert into idb_states ( intercept_id, flow_control, last_modified ) values ( ?, 'AOI-REQ', DEFAULT )";
+    private static final String INSERT_AOI_REQ 
+            = "insert into idb_states "
+            + "  ( intercept_id, flow_control, last_modified ) "
+            + "    values ( ?, 'AOI-REQ', DEFAULT )";
 
     private final Connection conn;
     private final PreparedStatement icptPs;
@@ -76,9 +79,10 @@ public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
             icptPs.setString(col++, i.getCountryCode());
             icptPs.setDouble(col++, i.getLatitude());
             icptPs.setDouble(col++, i.getLongitude());
-            icptPs.setDouble(col++, i.getMajor());
-            icptPs.setDouble(col++, i.getMinor());
+            icptPs.setDouble(col++, i.getSemiMajor());
+            icptPs.setDouble(col++, i.getSemiMinor());
             icptPs.setDouble(col++, i.getOrientation());
+            icptPs.setString(col++, i.getReadOutStation());
             icptPs.executeUpdate();
             try (ResultSet rs = icptPs.getGeneratedKeys()) {
                 if (rs.next()) {

@@ -67,8 +67,8 @@ public class InterceptGenerator {
         i.setCountryCode(countries.get(rng.nextInt(countries.size())).countryCode);
         i.setLatitude(rng.nextDouble() * 360 - 180);
         i.setLongitude(rng.nextDouble() * 180 - 90);
-        i.setMajor(rng.nextDouble() * 100);
-        i.setMinor(rng.nextDouble() * i.getMajor());
+        i.setSemiMajor(rng.nextDouble() * 100);
+        i.setSemiMinor(rng.nextDouble() * i.getSemiMajor());
         i.setOrientation(rng.nextDouble() * 180);
 
         i.setModType(rng.randomString(2));
@@ -80,6 +80,7 @@ public class InterceptGenerator {
         i.setScanPeriod(rng.nextDouble());
 
         i.setWranglerId(rng.randomString(10));
+        i.setReadOutStation(rng.randomString(2));
 
         return i;
     }

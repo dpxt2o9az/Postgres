@@ -1,4 +1,4 @@
-db.url=jdbc:postgresql://work.lan:5432/postgres
-db.username=postgres
-db.password=""
+db.url=jdbc:postgresql://<hostname-or-ip>:<tcp-port>/<db-name>
+db.username=<username>
+db.password=<password>
 

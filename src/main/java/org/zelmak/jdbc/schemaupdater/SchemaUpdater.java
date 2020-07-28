@@ -88,7 +88,7 @@ public class SchemaUpdater {
                 String text = Files.readAllLines(update.toPath()).stream().collect(Collectors.joining("\n"));
                 for (String command : splitOnGo(text)) {
                     try {
-                        LOG.log(Level.INFO, "attempting to apply command {0}", command);
+                        LOG.log(Level.FINE, "attempting to apply command {0}", command);
                         st.executeUpdate(command);
                     } catch (SQLException e) {
                         LOG.log(Level.SEVERE, "unable to execute command {0}", command);

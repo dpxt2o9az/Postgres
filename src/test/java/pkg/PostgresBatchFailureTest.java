@@ -31,7 +31,7 @@ public class PostgresBatchFailureTest {
     public static void setupAll() throws IOException, SQLException {
         connections = new ArrayList<>();
 
-        connections.add(DriverManager.getConnection("jdbc:postgresql://loki.lan:5432/postgres", "postgres", ""));
+        connections.add(DriverManager.getConnection("jdbc:postgresql://work.lan:5432/postgres", "postgres", ""));
         connections.add(DriverManager.getConnection("jdbc:h2:mem:test;MODE=PostgreSQL"));
 
         for (Connection conn : connections) {

@@ -12,9 +12,11 @@ create table if not exists intercepts (
    country_code varchar(2) not null,
    latitude numeric not null, 
    longitude numeric not null, 
-   major numeric not null, 
-   minor numeric not null, 
+   semi_major numeric not null, 
+   semi_minor numeric not null, 
    orientation numeric not null,
+   read_out_station varchar(2) not null,
+   num_of_burst int not null,
    CONSTRAINT unique_wrangler_id UNIQUE (wrangler_id), 
    CONSTRAINT intercept_pk PRIMARY KEY (intercept_id) 
  );

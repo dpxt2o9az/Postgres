@@ -10,9 +10,12 @@ public class SingleRecordWriter {
 
     public static final String PARENT_RECORD_INSERTION
             = "INSERT INTO intercepts"
-            + " ( intercept_id, wrangler_id, elnot, mod_type, scan_type, scan_period, time_process, int_up_time, int_down_time, country_code, latitude, longitude, major, minor, orientation ) "
+            + " ( intercept_id, wrangler_id, elnot, mod_type, scan_type, scan_period, "
+            + "   time_process, int_up_time, int_down_time, "
+            + "   country_code, latitude, longitude, semi_major, semi_minor, orientation,"
+            + "   read_out_station ) "
             + "   values "
-            + " ( DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) "
+            + " ( DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) "
             + " ON CONFLICT DO NOTHING";
     public static final  String RF_RECORD_INSERTION
             = "INSERT INTO intercept_rfs "
