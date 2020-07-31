@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mil.af.flagging.aoi.db;
+package mil.af.flagging.aoi;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
-import mil.af.flagging.aoi.model.AreaOfInterest;
 import mil.af.flagging.db.DAO;
 import mil.af.flagging.db.Result;
 

@@ -1,4 +1,4 @@
-package mil.af.flagging.aoi.db;
+package mil.af.flagging.aoi;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

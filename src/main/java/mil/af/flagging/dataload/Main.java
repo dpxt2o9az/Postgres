@@ -2,11 +2,9 @@ package mil.af.flagging.dataload;
 
 import java.util.Collection;
 import javax.sql.DataSource;
-import mil.af.flagging.aoi.db.AoiDAO;
-import mil.af.flagging.aoi.db.CountryDAO;
-import mil.af.flagging.aoi.model.AreaOfInterest;
-import mil.af.flagging.dataload.db.InterceptInserter;
-import mil.af.flagging.dataload.db.JDBCInterceptInserterWithConflicts;
+import mil.af.flagging.aoi.AoiDAO;
+import mil.af.flagging.aoi.CountryDAO;
+import mil.af.flagging.aoi.AreaOfInterest;
 import mil.af.flagging.db.DataSourceBuilder;
 import mil.af.flagging.model.AreaOfInterestGenerator;
 import mil.af.flagging.model.Country;

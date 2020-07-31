@@ -1,4 +1,4 @@
-package mil.af.flagging.dataload.db;
+package mil.af.flagging.dataload;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

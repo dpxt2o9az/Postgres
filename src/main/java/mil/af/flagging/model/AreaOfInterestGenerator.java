@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import mil.af.flagging.aoi.model.AreaOfInterest;
+import mil.af.flagging.aoi.AreaOfInterest;
 
 /**
  *
