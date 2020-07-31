@@ -13,9 +13,9 @@ public class SingleRecordWriter {
             + " ( intercept_id, wrangler_id, elnot, mod_type, scan_type, scan_period, "
             + "   time_process, int_up_time, int_down_time, "
             + "   country_code, latitude, longitude, semi_major, semi_minor, orientation,"
-            + "   read_out_station ) "
+            + "   read_out_station, num_of_burst ) "
             + "   values "
-            + " ( DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) "
+            + " ( DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) "
             + " ON CONFLICT DO NOTHING";
     public static final  String RF_RECORD_INSERTION
             = "INSERT INTO intercept_rfs "

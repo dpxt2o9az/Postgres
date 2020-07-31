@@ -139,10 +139,9 @@ public class MainApp implements Runnable {
     };
 
     private final Acceptor realAcceptor = new Acceptor() {
+        @Override
         public boolean accepts(FilterIntercept i) {
-            return (i.burstCount
-                    > 4 || i.modType.equals(
-                            "CC"))
+            return (i.burstCount > 4 || i.modType.equals("CC"))
                     && cfg.includedModulationTypes.contains(i.modType)
                     && cfg.includedReadoutStations.contains(i.readoutStation)
                     && !cfg.excludedElnots.contains(i.elnot);

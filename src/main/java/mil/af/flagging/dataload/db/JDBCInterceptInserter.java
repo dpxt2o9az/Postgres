@@ -7,9 +7,7 @@ package mil.af.flagging.dataload.db;
 
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.List;
 import javax.sql.DataSource;
-import mil.af.flagging.model.Country;
 import mil.af.flagging.model.Intercept;
 import mil.af.flagging.model.InterceptGenerator;
 
@@ -19,11 +17,11 @@ import mil.af.flagging.model.InterceptGenerator;
  */
 public class JDBCInterceptInserter extends InterceptInserter {
 
-    private final List<Country> countries;
+    private final InterceptGenerator g;
 
-    public JDBCInterceptInserter(DataSource ds, List<Country> countries, int icptCount) {
+    public JDBCInterceptInserter(DataSource ds, InterceptGenerator g, int icptCount) {
         super(ds, icptCount);
-        this.countries = countries;
+        this.g = g;
     }
 
     @Override
@@ -37,8 +35,7 @@ public class JDBCInterceptInserter extends InterceptInserter {
 
     private void doJDBCWithOneTransaction() throws SQLException {
         ByRecordDataLoadInterceptDAO dao = new ByRecordDataLoadInterceptDAO(super.ds);
-        InterceptGenerator gen = new InterceptGenerator(countries);
-        Collection<Intercept> icpts = gen.createIntercepts(super.icptCount);
+        Collection<Intercept> icpts = g.createIntercepts(super.icptCount);
         dao.storeNewIntercepts(icpts);
     }
 

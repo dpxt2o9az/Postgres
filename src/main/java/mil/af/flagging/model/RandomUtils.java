@@ -27,7 +27,7 @@ public class RandomUtils extends Random {
         return this.nextInt(max - min) + min;
     }
 
-    public String randomString(int stringLength) {
+    public String randomAlphaNumeric(int stringLength) {
         final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         char[] array = new char[stringLength];
         for (int i = 0; i < array.length; i++) {

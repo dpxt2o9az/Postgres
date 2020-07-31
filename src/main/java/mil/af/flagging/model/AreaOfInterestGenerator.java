@@ -29,7 +29,7 @@ public class AreaOfInterestGenerator {
     public Collection<AreaOfInterest> generateAOIs(int count) {
         Set<AreaOfInterest> aois = new TreeSet<>();
         for (int i = 0; i < count; i++) {
-            String code = rng.randomString(2);
+            String code = rng.randomAlphaNumeric(2);
             String desc = code + " description";
             AreaOfInterest aoi = new AreaOfInterest(code, desc);
             for (int j = 0; j < rng.nextInt(5, countries.size()); j++) {

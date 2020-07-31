@@ -83,6 +83,7 @@ public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
             icptPs.setDouble(col++, i.getSemiMinor());
             icptPs.setDouble(col++, i.getOrientation());
             icptPs.setString(col++, i.getReadOutStation());
+            icptPs.setInt(col++, i.getBurstCount());
             icptPs.executeUpdate();
             try (ResultSet rs = icptPs.getGeneratedKeys()) {
                 if (rs.next()) {

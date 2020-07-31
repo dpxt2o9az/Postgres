@@ -8,10 +8,10 @@ public class InterceptGenerator {
 
     private final RandomUtils rng = new RandomUtils();
 
-    private final List<Country> countries;
+    private final Environment e;
 
-    public InterceptGenerator(Collection<Country> countries) {
-        this.countries = new ArrayList<>(countries);
+    public InterceptGenerator(Environment e) {
+        this.e = e;
     }
 
     public static Instant between(Instant startInclusive, Instant endExclusive) {
@@ -56,7 +56,7 @@ public class InterceptGenerator {
 
     public Intercept createIntercept() {
         Intercept i = new Intercept();
-        i.setElnot(rng.randomString(5));
+        i.setElnot(rng.randomAlphaNumeric(5));
 
         Date now = new Date();
         Date sixMonthsAgo = Date.from(ZonedDateTime.now(ZoneOffset.UTC).minusMonths(6).toInstant());
@@ -64,24 +64,33 @@ public class InterceptGenerator {
         i.setIntUpTime(between(sixMonthsAgo, now));
         i.setIntDownTime(between(i.getIntUpTime(), now));
 
-        i.setCountryCode(countries.get(rng.nextInt(countries.size())).countryCode);
+        i.setCountryCode(randomCountry().countryCode);
         i.setLatitude(rng.nextDouble() * 360 - 180);
         i.setLongitude(rng.nextDouble() * 180 - 90);
         i.setSemiMajor(rng.nextDouble() * 100);
         i.setSemiMinor(rng.nextDouble() * i.getSemiMajor());
         i.setOrientation(rng.nextDouble() * 180);
 
-        i.setModType(rng.randomString(2));
+        i.setModType(rng.randomAlphaNumeric(2));
         i.setRfs(rng.randomDoubleList(rng.nextInt(10) + 1));
         i.setPris(rng.randomDoubleList(rng.nextInt(20) + 1));
         i.setPds(rng.randomDoubleList(rng.nextInt(5) + 1));
 
-        i.setScanType(rng.randomString(2));
+        i.setScanType(rng.randomAlphaNumeric(2));
         i.setScanPeriod(rng.nextDouble());
 
-        i.setWranglerId(rng.randomString(10));
-        i.setReadOutStation(rng.randomString(2));
+        i.setWranglerId(rng.randomAlphaNumeric(10));
+        i.setReadOutStation(rng.randomAlphaNumeric(2));
+        i.setBurstCount(rng.nextInt(120));
 
         return i;
+    }
+    
+    private Country randomCountry() {
+        return e.countries.get(rng.nextInt(e.countries.size()));
+    }
+    
+    private ModulationType randomModType() {
+        return e.modTypes.get(rng.nextInt(e.modTypes.size()));
     }
 }

@@ -23,6 +23,8 @@ public class Intercept implements Serializable, Comparable<Intercept> {
     private Date intDownTime;
     
     // pulse fields
+    private int burstCount;
+
     @ElementCollection
     @OrderColumn(name = "sequence")
     @Column(name="rf")
@@ -204,6 +206,14 @@ public class Intercept implements Serializable, Comparable<Intercept> {
 
     public void setReadOutStation(String readOutStation) {
         this.readOutStation = readOutStation;
+    }
+
+    public int getBurstCount() {
+        return burstCount;
+    }
+
+    public void setBurstCount(int burstCount) {
+        this.burstCount = burstCount;
     }
 
     public boolean isProcessed() {

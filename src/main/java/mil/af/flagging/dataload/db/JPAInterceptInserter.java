@@ -5,13 +5,11 @@
  */
 package mil.af.flagging.dataload.db;
 
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.sql.DataSource;
-import mil.af.flagging.model.Country;
 import mil.af.flagging.model.Intercept;
 import mil.af.flagging.model.InterceptGenerator;
 
@@ -21,11 +19,11 @@ import mil.af.flagging.model.InterceptGenerator;
  */
 public class JPAInterceptInserter extends InterceptInserter {
 
-    private final List<Country> countries;
+    private final InterceptGenerator g;
     
-    public JPAInterceptInserter(DataSource ds, List<Country> countries, int icptCount) {
+    public JPAInterceptInserter(DataSource ds, InterceptGenerator g, int icptCount) {
         super(ds, icptCount);
-        this.countries = countries;
+        this.g = g;
     }
 
     @Override
@@ -45,11 +43,9 @@ public class JPAInterceptInserter extends InterceptInserter {
 
         EntityTransaction tx = em.getTransaction();
 
-        InterceptGenerator gen = new InterceptGenerator(countries);
-        
         for (int i = 0; i < super.icptCount; i++) {
             tx.begin();
-            Intercept icpt = gen.createIntercept();
+            Intercept icpt = g.createIntercept();
             em.persist(icpt);
             tx.commit();
         }

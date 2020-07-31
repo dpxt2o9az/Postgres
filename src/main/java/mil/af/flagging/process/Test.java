@@ -16,6 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import mil.af.flagging.model.Country;
 import mil.af.flagging.model.CountryGenerator;
+import mil.af.flagging.model.Environment;
 import mil.af.flagging.model.Intercept;
 import mil.af.flagging.model.InterceptGenerator;
 
@@ -33,8 +34,8 @@ public class Test {
         poison.setWranglerId("POISON");
 
         BlockingQueue<Intercept> bq = new ArrayBlockingQueue<>(1000);
-        Collection<Country> countries = new CountryGenerator().generateCountries(150);
-        InterceptGenerator gen = new InterceptGenerator(countries);
+        Environment e = Environment.randomEnvironment(0L);
+        InterceptGenerator gen = new InterceptGenerator(e);
 
         Collection<Intercept> icptCollection = gen.createInterceptsWithConflicts(ICPT_CNT, (int) (ICPT_CNT * 0.02));
         Queue<Intercept> icptQueue = new LinkedList<>(icptCollection);

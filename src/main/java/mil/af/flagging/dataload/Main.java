@@ -1,7 +1,6 @@
 package mil.af.flagging.dataload;
 
 import java.util.Collection;
-import java.util.List;
 import javax.sql.DataSource;
 import mil.af.flagging.aoi.db.AoiDAO;
 import mil.af.flagging.aoi.db.CountryDAO;
@@ -11,7 +10,8 @@ import mil.af.flagging.dataload.db.JDBCInterceptInserterWithConflicts;
 import mil.af.flagging.db.DataSourceBuilder;
 import mil.af.flagging.model.AreaOfInterestGenerator;
 import mil.af.flagging.model.Country;
-import mil.af.flagging.model.CountryGenerator;
+import mil.af.flagging.model.Environment;
+import mil.af.flagging.model.InterceptGenerator;
 import org.zelmak.jdbc.schemaupdater.DatabaseSettings;
 
 public class Main {
@@ -20,11 +20,11 @@ public class Main {
         DatabaseSettings db = DatabaseSettings.fromPropertiesFile(args[0]);
         DataSource ds = DataSourceBuilder.build(db.url, db.username, db.password);
 
-        Collection<Country> countries = new CountryGenerator().generateCountries(150);
-        Collection<AreaOfInterest> aois = new AreaOfInterestGenerator(countries).generateAOIs(150);
+        Environment e = Environment.randomEnvironment(0l);
+        Collection<AreaOfInterest> aois = new AreaOfInterestGenerator(e.countries).generateAOIs(150);
 
         CountryDAO ccDao = new CountryDAO(ds);
-        for (Country c : countries) {
+        for (Country c : e.countries) {
             ccDao.storeCountry(c);
         }
 
@@ -33,8 +33,10 @@ public class Main {
             aDao.storeAOI(aoi);
         }
 
-        for (int i = 0; i < 42; i++) {
-            InterceptInserter runner = new JDBCInterceptInserterWithConflicts(ds, countries, 10000);
+        InterceptGenerator g = new InterceptGenerator(e);
+        
+        for (int i = 0; i < 200; i++) {
+            InterceptInserter runner = new JDBCInterceptInserterWithConflicts(ds, g, 10000);
             runner.run();
         }
     }

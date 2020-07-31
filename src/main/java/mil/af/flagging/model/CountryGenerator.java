@@ -23,7 +23,7 @@ public class CountryGenerator {
     public Collection<Country> generateCountries(int count) {
         Set<Country> countries = new TreeSet<>();
         for (int i = 0; i < count; i++) {
-            String cc = rng.randomString(2);
+            String cc = rng.randomAlphaNumeric(2);
             String d = cc + " description";
             Country c = new Country(cc, d);
             countries.add(c);
