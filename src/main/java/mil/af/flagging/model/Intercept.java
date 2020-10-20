@@ -46,7 +46,9 @@ public class Intercept implements Serializable, Comparable<Intercept> {
     private Double scanPeriod;
 
     // location fields
-    private String countryCode;
+    @ManyToOne(targetEntity = Country.class,optional = false)
+    @JoinColumn(name="COUNTRY_ID")
+    private Country country;
     private Double latitude;
     private Double longitude;
     private Double semiMajor;
@@ -152,12 +154,12 @@ public class Intercept implements Serializable, Comparable<Intercept> {
         this.scanPeriod = scanPeriod;
     }
 
-    public String getCountryCode() {
-        return countryCode;
+    public Country getCountry() {
+        return country;
     }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public Double getLatitude() {

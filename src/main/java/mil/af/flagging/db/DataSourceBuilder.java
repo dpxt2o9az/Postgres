@@ -5,9 +5,8 @@
  */
 package mil.af.flagging.db;
 
-import java.sql.SQLException;
 import javax.sql.DataSource;
-import org.postgresql.ds.PGSimpleDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 /**
  *
@@ -15,11 +14,38 @@ import org.postgresql.ds.PGSimpleDataSource;
  */
 public class DataSourceBuilder {
 
-    public static DataSource build(String url, String username, String password) throws SQLException {
-        PGSimpleDataSource ds = new PGSimpleDataSource();
-        ds.setURL(url);
-        ds.setUser(username);
+    private final String url;
+    private final String username;
+    private final String password;
+    private String driver;
+    private Integer maxConnections;
+
+    public DataSourceBuilder(String url, String username, String password) {
+        this.url = url;
+        this.username = username;
+        this.password = password;
+    }
+
+    public DataSource build() {
+        BasicDataSource ds = new BasicDataSource();
+        ds.setUrl(url);
+        ds.setUsername(username);
         ds.setPassword(password);
+        ds.setDriverClassName(driver);
+        if (maxConnections != null) {
+            ds.setMaxTotal(maxConnections);
+        }
         return ds;
     }
+
+    public DataSourceBuilder driver(String driver) {
+        this.driver = driver;
+        return this;
+    }
+
+    public DataSourceBuilder maxConnections(int maxConn) {
+        this.maxConnections = maxConn;
+        return this;
+    }
+
 }

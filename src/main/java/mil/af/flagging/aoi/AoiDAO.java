@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.sql.DataSource;
 import mil.af.flagging.db.DAO;
 import mil.af.flagging.db.Result;
@@ -21,19 +22,17 @@ import mil.af.flagging.db.Result;
  */
 public class AoiDAO extends DAO {
 
-    private static final String INSERT_AOI_COUNTRY_CODES = "insert into aoi_country_codes ( aoi_code, country_code ) values ( ?, ? ) on conflict do nothing";
-    private static final String INSERT_AOI_CODES = "insert into aoi_codes ( aoi_code, description ) values ( ?, ? ) on conflict do nothing";
-    private static final String SELECT_AOI_COUNTRIES = "select * from aoi_country_codes where aoi_code = ?";
-    private static final String SELECT_ALL_AOI_CODES = "select * from aoi_codes";
-
-    public AoiDAO(DataSource ds) throws SQLException {
+    private final Map<String, String> dialect;
+    
+    public AoiDAO(DataSource ds, Map<String, String> dialect) throws SQLException {
         super(ds);
+        this.dialect = dialect;
     }
 
     public Result storeAOI(AreaOfInterest aoi) throws SQLException {
         try (Connection conn = ds.getConnection()) {
-            try (PreparedStatement mainPs = conn.prepareStatement(INSERT_AOI_CODES);
-                    PreparedStatement aoiCcPs = conn.prepareStatement(INSERT_AOI_COUNTRY_CODES)) {
+            try (PreparedStatement mainPs = conn.prepareStatement(dialect.get("INSERT_AOI_CODES"));
+                    PreparedStatement aoiCcPs = conn.prepareStatement(dialect.get("INSERT_AOI_COUNTRY_CODES"))) {
                 mainPs.setString(1, aoi.aoiCode);
                 mainPs.setString(2, aoi.description);
                 int count = mainPs.executeUpdate();
@@ -46,14 +45,16 @@ public class AoiDAO extends DAO {
                     aoiCcPs.executeUpdate();
                 }
                 return Result.SUCCESS;
+            } catch (SQLException e) {
+                return Result.CONSTRAINT_FAILURE;
             }
         }
     }
 
     public List<AreaOfInterest> fetchAOIs() throws SQLException {
         try (Connection conn = ds.getConnection()) {
-            try (PreparedStatement mainPs = conn.prepareStatement(SELECT_ALL_AOI_CODES);
-                    PreparedStatement aoiCcPs = conn.prepareStatement(SELECT_AOI_COUNTRIES)) {
+            try (PreparedStatement mainPs = conn.prepareStatement(dialect.get("SELECT_ALL_AOI_CODES"));
+                    PreparedStatement aoiCcPs = conn.prepareStatement(dialect.get("SELECT_AOI_COUNTRIES"))) {
                 try (ResultSet rs = mainPs.executeQuery()) {
                     List<AreaOfInterest> all = new ArrayList<>();
                     while (rs.next()) {

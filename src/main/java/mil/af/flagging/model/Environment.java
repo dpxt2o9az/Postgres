@@ -42,6 +42,11 @@ public class Environment {
 
             e.modTypes.add(new ModulationType(mt, mt));
         }
+        
+        for (int i = 0; i < r.nextInt(10,25); i++) {
+            String st = r.randomAlphaNumeric(2);
+            e.scanTypes.add(st);
+        }
 
         for (int i = 0; i < r.nextInt(25, 50); i++) {
             String elnot = r.randomAlphaNumeric(5);

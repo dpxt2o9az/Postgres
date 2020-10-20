@@ -9,6 +9,7 @@ import java.util.Properties;
 
 public class DatabaseSettings {
     
+    public String driver;
     public String url;
     public String username;
     public String password;
@@ -31,6 +32,7 @@ public class DatabaseSettings {
 
     public static DatabaseSettings fromProperties(Properties p) {
         DatabaseSettings db = new DatabaseSettings();
+        db.driver = p.getProperty("db.driver");
         db.url = p.getProperty("db.url");
         db.username = p.getProperty("db.username");
         db.password = p.getProperty("db.password");

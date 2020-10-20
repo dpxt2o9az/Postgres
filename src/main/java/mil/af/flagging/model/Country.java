@@ -6,16 +6,25 @@
 package mil.af.flagging.model;
 
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  *
  * @author Brad
  */
+@Entity
 public class Country implements Comparable<Country> {
 
+    @Id
+    public int id;
     public String countryCode;
     public String description;
 
+    public Country() {
+        
+    }
+    
     public Country(String countryCode, String description) {
         this.countryCode = countryCode;
         this.description = description;

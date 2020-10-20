@@ -1,0 +1,5 @@
+db.driver=oracle.jdbc.OracleDriver
+db.url=jdbc:oracle:thin:@oracle19c.lan:1521:<db-name>
+db.username=<db-user>
+db.password=<db-user-password>
+

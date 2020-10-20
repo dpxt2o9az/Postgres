@@ -33,7 +33,7 @@ public class MainApp implements Runnable {
 
     public static void main(String[] args) throws Exception {
         DatabaseSettings db = DatabaseSettings.fromPropertiesFile(new File(System.getProperty("user.home"), "projects/postgres/src/main/resources/cfg"));
-        DataSource ds = DataSourceBuilder.build(db.url, db.username, db.password);
+        DataSource ds = new DataSourceBuilder(db.url, db.username, db.password).build();
         MainApp app = new MainApp(ds);
         app.run();
     }

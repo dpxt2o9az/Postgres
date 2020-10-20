@@ -22,10 +22,6 @@ import mil.af.flagging.model.*;
 public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
 
     private static final Logger LOG = Logger.getLogger(ByRecordDataLoadInterceptDAO.class.getName());
-    private static final String INSERT_AOI_REQ 
-            = "insert into idb_states "
-            + "  ( intercept_id, flow_control, last_modified ) "
-            + "    values ( ?, 'AOI-REQ', DEFAULT )";
 
     private final Connection conn;
     private final PreparedStatement icptPs;
@@ -34,14 +30,14 @@ public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
     private final PreparedStatement pdPs;
     private final PreparedStatement statePs;
 
-    public ByRecordDataLoadInterceptDAO(DataSource ds) throws SQLException {
+    public ByRecordDataLoadInterceptDAO(DataSource ds, Map<String, String> dialect) throws SQLException {
         super(ds);
         conn = ds.getConnection();
-        icptPs = conn.prepareStatement(SingleRecordWriter.PARENT_RECORD_INSERTION, new String[]{"intercept_id"});
-        rfPs = conn.prepareStatement(SingleRecordWriter.RF_RECORD_INSERTION);
-        priPs = conn.prepareStatement(SingleRecordWriter.PRI_RECORD_INSERTION);
-        pdPs = conn.prepareStatement(SingleRecordWriter.PD_RECORD_INSERTION);
-        statePs = conn.prepareStatement(INSERT_AOI_REQ);
+        icptPs = conn.prepareStatement(dialect.get("PARENT_RECORD_INSERTION"), new String[]{"intercept_id"});
+        rfPs = conn.prepareStatement(dialect.get("RF_RECORD_INSERTION"));
+        priPs = conn.prepareStatement(dialect.get("PRI_RECORD_INSERTION"));
+        pdPs = conn.prepareStatement(dialect.get("PD_RECORD_INSERTION"));
+        statePs = conn.prepareStatement(dialect.get("INSERT_AOI_REQ"));
     }
 
     @Override
@@ -67,59 +63,65 @@ public class ByRecordDataLoadInterceptDAO extends AbstractDataloadDAO {
         originalAutoCommit = conn.getAutoCommit();
         conn.setAutoCommit(false);
         for (Intercept i : icpts) {
-            int col = 1;
-            icptPs.setString(col++, i.getWranglerId());
-            icptPs.setString(col++, i.getElnot());
-            icptPs.setString(col++, i.getModType());
-            icptPs.setString(col++, i.getScanType());
-            icptPs.setDouble(col++, i.getScanPeriod());
-            icptPs.setTimestamp(col++, sqlTimestampFrom(i.getTimeProcessed()));
-            icptPs.setTimestamp(col++, sqlTimestampFrom(i.getIntUpTime()));
-            icptPs.setTimestamp(col++, sqlTimestampFrom(i.getIntDownTime()));
-            icptPs.setString(col++, i.getCountryCode());
-            icptPs.setDouble(col++, i.getLatitude());
-            icptPs.setDouble(col++, i.getLongitude());
-            icptPs.setDouble(col++, i.getSemiMajor());
-            icptPs.setDouble(col++, i.getSemiMinor());
-            icptPs.setDouble(col++, i.getOrientation());
-            icptPs.setString(col++, i.getReadOutStation());
-            icptPs.setInt(col++, i.getBurstCount());
-            icptPs.executeUpdate();
-            try (ResultSet rs = icptPs.getGeneratedKeys()) {
-                if (rs.next()) {
-                    i.setInterceptId(rs.getLong(1));
-                } else {
-                    LOG.log(Level.WARNING, "failed to insert wrangler-id {0}; probable duplicate id", i.getWranglerId());
-                    results.put(i, Result.CONSTRAINT_FAILURE);
-                    continue;
+            try {
+                int col = 1;
+                icptPs.setString(col++, i.getWranglerId());
+                icptPs.setString(col++, i.getElnot());
+                icptPs.setString(col++, i.getModType());
+                icptPs.setString(col++, i.getScanType());
+                icptPs.setDouble(col++, i.getScanPeriod());
+                icptPs.setTimestamp(col++, sqlTimestampFrom(i.getTimeProcessed()));
+                icptPs.setTimestamp(col++, sqlTimestampFrom(i.getIntUpTime()));
+                icptPs.setTimestamp(col++, sqlTimestampFrom(i.getIntDownTime()));
+                icptPs.setString(col++, i.getCountry().countryCode);
+                icptPs.setDouble(col++, i.getLatitude());
+                icptPs.setDouble(col++, i.getLongitude());
+                icptPs.setDouble(col++, i.getSemiMajor());
+                icptPs.setDouble(col++, i.getSemiMinor());
+                icptPs.setDouble(col++, i.getOrientation());
+                icptPs.setString(col++, i.getReadOutStation());
+                icptPs.setInt(col++, i.getBurstCount());
+                icptPs.executeUpdate();
+                try (ResultSet rs = icptPs.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        i.setInterceptId(rs.getLong(1));
+                    } else {
+                        LOG.log(Level.WARNING, "failed to insert wrangler-id {0}; probable duplicate id", i.getWranglerId());
+                        results.put(i, Result.CONSTRAINT_FAILURE);
+                        continue;
+                    }
                 }
-            }
-            for (int idx = 0; idx < i.getRfs().size(); idx++) {
-                rfPs.setLong(1, i.getInterceptId());
-                rfPs.setInt(2, idx + 1);
-                rfPs.setDouble(3, i.getRfs().get(idx));
-                rfPs.addBatch();
-            }
-            rfPs.executeBatch();
-            for (int idx = 0; idx < i.getPris().size(); idx++) {
-                priPs.setLong(1, i.getInterceptId());
-                priPs.setInt(2, idx + 1);
-                priPs.setDouble(3, i.getPris().get(idx));
-                priPs.addBatch();
-            }
-            priPs.executeBatch();
-            for (int idx = 0; idx < i.getPds().size(); idx++) {
-                pdPs.setLong(1, i.getInterceptId());
-                pdPs.setInt(2, idx + 1);
-                pdPs.setDouble(3, i.getPds().get(idx));
-                pdPs.addBatch();
-            }
-            pdPs.executeBatch();
+                for (int idx = 0; idx < i.getRfs().size(); idx++) {
+                    rfPs.setLong(1, i.getInterceptId());
+                    rfPs.setInt(2, idx + 1);
+                    rfPs.setDouble(3, i.getRfs().get(idx));
+                    rfPs.addBatch();
+                }
+                rfPs.executeBatch();
+                for (int idx = 0; idx < i.getPris().size(); idx++) {
+                    priPs.setLong(1, i.getInterceptId());
+                    priPs.setInt(2, idx + 1);
+                    priPs.setDouble(3, i.getPris().get(idx));
+                    priPs.addBatch();
+                }
+                priPs.executeBatch();
+                for (int idx = 0; idx < i.getPds().size(); idx++) {
+                    pdPs.setLong(1, i.getInterceptId());
+                    pdPs.setInt(2, idx + 1);
+                    pdPs.setDouble(3, i.getPds().get(idx));
+                    pdPs.addBatch();
+                }
+                pdPs.executeBatch();
 
-            statePs.setLong(1, i.getInterceptId());
-            statePs.executeUpdate();
-            
-            results.put(i, Result.SUCCESS);
+                statePs.setLong(1, i.getInterceptId());
+                statePs.executeUpdate();
+
+                results.put(i, Result.SUCCESS);
+            } catch (SQLIntegrityConstraintViolationException e) {
+                results.put(i, Result.CONSTRAINT_FAILURE);
+            } catch (SQLException e) {
+                results.put(i, Result.OTHER_FAILURE);
+            }
         }
 
         conn.commit();

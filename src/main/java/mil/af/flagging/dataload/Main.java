@@ -1,6 +1,7 @@
 package mil.af.flagging.dataload;
 
 import java.util.Collection;
+import java.util.Map;
 import javax.sql.DataSource;
 import mil.af.flagging.aoi.AoiDAO;
 import mil.af.flagging.aoi.CountryDAO;
@@ -15,28 +16,39 @@ import org.zelmak.jdbc.schemaupdater.DatabaseSettings;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        DatabaseSettings db = DatabaseSettings.fromPropertiesFile(args[0]);
-        DataSource ds = DataSourceBuilder.build(db.url, db.username, db.password);
+
+        DatabaseSettings dbCfg = DatabaseSettings.fromPropertiesFile(args[0]);
+
+        DataSource ds = createDataSourceFrom(dbCfg);
+
+        Map<String, String> dialect = new OracleDialect();
 
         Environment e = Environment.randomEnvironment(0l);
         Collection<AreaOfInterest> aois = new AreaOfInterestGenerator(e.countries).generateAOIs(150);
 
-        CountryDAO ccDao = new CountryDAO(ds);
+        CountryDAO ccDao = new CountryDAO(ds, dialect);
         for (Country c : e.countries) {
             ccDao.storeCountry(c);
         }
 
-        AoiDAO aDao = new AoiDAO(ds);
+        AoiDAO aDao = new AoiDAO(ds, dialect);
         for (AreaOfInterest aoi : aois) {
             aDao.storeAOI(aoi);
         }
 
         InterceptGenerator g = new InterceptGenerator(e);
-        
+
         for (int i = 0; i < 200; i++) {
-            InterceptInserter runner = new JDBCInterceptInserterWithConflicts(ds, g, 10000);
+            InterceptInserter runner = new JPAInterceptInserter(ds, g, 10_000);
             runner.run();
         }
+    }
+
+    private static DataSource createDataSourceFrom(DatabaseSettings dbCfg) {
+        return new DataSourceBuilder(dbCfg.url, dbCfg.username, dbCfg.password)
+                .driver(dbCfg.driver)
+                .maxConnections(10)
+                .build();
     }
 
 }

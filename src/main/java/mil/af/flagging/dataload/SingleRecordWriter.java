@@ -4,11 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 import mil.af.flagging.model.Intercept;
 
 public class SingleRecordWriter {
 
-    public static final String PARENT_RECORD_INSERTION
+    private static final String PARENT_RECORD_INSERTION
             = "INSERT INTO intercepts"
             + " ( intercept_id, wrangler_id, elnot, mod_type, scan_type, scan_period, "
             + "   time_process, int_up_time, int_down_time, "
@@ -17,38 +18,25 @@ public class SingleRecordWriter {
             + "   values "
             + " ( DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) "
             + " ON CONFLICT DO NOTHING";
-    public static final  String RF_RECORD_INSERTION
-            = "INSERT INTO intercept_rfs "
-            + "  ( intercept_id, sequence, value ) "
-            + "     values "
-            + "   ( ?, ?, ? )";
-    public static final  String PRI_RECORD_INSERTION
-            = "INSERT INTO intercept_pris "
-            + "  ( intercept_id, sequence, value ) "
-            + "     values "
-            + "   ( ?, ?, ? )";
-    public static final  String PD_RECORD_INSERTION
-            = "INSERT INTO intercept_pds "
-            + "  ( intercept_id, sequence, value ) "
-            + "     values "
-            + "   ( ?, ?, ? )";
 
     private final Connection conn;
     private PreparedStatement iPs;
     private PreparedStatement rfPs;
     private PreparedStatement priPs;
     private PreparedStatement pdPs;
+    private final Map<String, String> dialect;
 
-    public SingleRecordWriter(Connection c) throws SQLException {
+    public SingleRecordWriter(Connection c, Map<String, String> dialect) throws SQLException {
         this.conn = c;
+        this.dialect = dialect;
         initPreparedStatements();
     }
 
     private void initPreparedStatements() throws SQLException {
-        this.iPs = conn.prepareStatement(PARENT_RECORD_INSERTION, new String[]{"intercept_id"});
-        this.rfPs = conn.prepareStatement(RF_RECORD_INSERTION);
-        this.priPs = conn.prepareStatement(PRI_RECORD_INSERTION);
-        this.pdPs = conn.prepareStatement(PD_RECORD_INSERTION);
+        this.iPs = conn.prepareStatement(dialect.get("PARENT_RECORD_INSERTION"), new String[]{"intercept_id"});
+        this.rfPs = conn.prepareStatement(dialect.get("RF_RECORD_INSERTION"));
+        this.priPs = conn.prepareStatement(dialect.get("PRI_RECORD_INSERTION"));
+        this.pdPs = conn.prepareStatement(dialect.get("PD_RECORD_INSERTION"));
     }
 
     public Long writeRecord(Intercept i) throws SQLException {

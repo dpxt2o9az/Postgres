@@ -1,4 +1,0 @@
-db.url=jdbc:postgresql://work.lan/postgres
-db.username=postgres
-db.password=
-

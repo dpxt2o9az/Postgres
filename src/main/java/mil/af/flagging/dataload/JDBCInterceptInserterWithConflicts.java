@@ -22,10 +22,12 @@ import mil.af.flagging.model.InterceptGenerator;
 public class JDBCInterceptInserterWithConflicts extends InterceptInserter {
 
     private final InterceptGenerator g;
+    private final Map<String, String> dialect;
 
-    public JDBCInterceptInserterWithConflicts(DataSource ds, InterceptGenerator g, int icptCount) {
+    public JDBCInterceptInserterWithConflicts(DataSource ds, Map<String, String> dialect, InterceptGenerator g, int icptCount) {
         super(ds, icptCount);
         this.g = g;
+        this.dialect = dialect;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class JDBCInterceptInserterWithConflicts extends InterceptInserter {
     }
 
     private void doJDBCWithOneTransaction() throws SQLException {
-        ByRecordDataLoadInterceptDAO dao = new ByRecordDataLoadInterceptDAO(super.ds);
+        ByRecordDataLoadInterceptDAO dao = new ByRecordDataLoadInterceptDAO(super.ds, dialect);
         Collection<Intercept> icpts = g.createInterceptsWithConflicts(super.icptCount, (int) (super.icptCount * 0.02));
         Map<Intercept, Result> results = dao.storeNewIntercepts(icpts);
         System.out.println(results.values().stream().collect(Collectors.groupingBy(Function.<Result>identity(), Collectors.<Result>counting())));

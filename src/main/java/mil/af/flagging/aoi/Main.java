@@ -36,7 +36,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         DatabaseSettings db = DatabaseSettings.fromPropertiesFile(new File(System.getProperty("user.home"), "projects/postgres/src/main/resources/cfg"));
-        DataSource ds = DataSourceBuilder.build(db.url, db.username, db.password);
+        DataSource ds = new DataSourceBuilder(db.url, db.username, db.password).build();
         try (Connection conn = ds.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(MERGE_QUERY)) {
                 ps.setString(1, "AOI_REQ");
