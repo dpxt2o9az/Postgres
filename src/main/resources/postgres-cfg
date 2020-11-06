@@ -1,4 +1,0 @@
-db.url=jdbc:postgresql://<db-hostname>/<db-name>
-db.username=<db-user-id>
-db.password=<db-user-password>
-
