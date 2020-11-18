@@ -1,5 +1,5 @@
 
-package dataminer;
+package mil.af.flagging.dataminer.model;
 
 import java.math.BigDecimal;
 import java.util.Objects;

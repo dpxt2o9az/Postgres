@@ -1,5 +1,6 @@
-package dataminer;
+package mil.af.flagging.dataminer;
 
+import mil.af.flagging.dataminer.model.Slope;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SlopeBuilderPlus {
+public class SlopeBuilderPlus implements ISlopeBuilder {
 
     private static final Logger LOG = Logger.getLogger(SlopeBuilderPlus.class.getName());
 

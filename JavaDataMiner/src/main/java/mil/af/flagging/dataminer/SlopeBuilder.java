@@ -1,18 +1,28 @@
 
-package dataminer;
+package mil.af.flagging.dataminer;
 
+import mil.af.flagging.dataminer.model.Slope;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SlopeBuilder {
+public class SlopeBuilder implements ISlopeBuilder {
 
     private static final Logger LOG = Logger.getLogger(SlopeBuilder.class.getName());
     
-    public List<Slope> generateSlopes(List<BigDecimal> input, BigDecimal delta_x) {
+    private final List<BigDecimal> input;
+    private final BigDecimal delta_x;
+    
+    public SlopeBuilder(List<BigDecimal> input, BigDecimal delta_x) {
+        this.input = Collections.unmodifiableList(input);
+        this.delta_x = delta_x;
+    }
+    
+    @Override
+    public List<Slope> generateSlopes() {
         List<Slope> slopes = new ArrayList<>();
         
         BigDecimal start_value = null;
