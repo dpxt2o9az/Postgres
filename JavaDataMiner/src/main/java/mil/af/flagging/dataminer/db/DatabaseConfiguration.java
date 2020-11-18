@@ -5,8 +5,6 @@
  */
 package mil.af.flagging.dataminer.db;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
-
 /**
  *
  * @author Brad
@@ -21,10 +19,9 @@ public class DatabaseConfiguration {
 
     public static DatabaseConfiguration from(String x) {
         DatabaseConfiguration cfg = new DatabaseConfiguration();
-        cfg.url = "jdbc:postgresql://127.0.0.1:5432/sampledb";
-//        cfg.url = "jdbc:oracle:thin:@oracle19c.lan:1521:devdb19";
-        cfg.username ="philipp";
-        cfg.password = "test_pwd";
+        cfg.url = "";
+        cfg.username ="";
+        cfg.password = "";
         return cfg;
     }
 }
