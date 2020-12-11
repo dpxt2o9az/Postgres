@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 import mil.af.flagging.dataminer.model.EnvModeMap;
 import mil.af.flagging.dataminer.model.EnvRange;
 import mil.af.flagging.dataminer.model.TuningConstraints;
-import mil.af.flagging.dataminer.model.TuningConstraints.Parameter;
-import mil.af.flagging.dataminer.model.TuningConstraints.TuningConstraint;
+import mil.af.flagging.dataminer.model.Parameter;
+import mil.af.flagging.dataminer.model.TuningConstraint;
 
 /**
  *

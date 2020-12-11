@@ -22,7 +22,7 @@ public class EnvModeMap {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void fill(Map<TuningConstraints.Parameter, Collection<EnvRange>> envRanges) {
+    public void fill(Map<Parameter, Collection<EnvRange>> envRanges) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

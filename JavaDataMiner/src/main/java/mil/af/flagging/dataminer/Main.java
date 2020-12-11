@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import mil.af.flagging.dataminer.model.EnvModeMap;
 import mil.af.flagging.dataminer.model.PriSequence;
-import mil.af.flagging.dataminer.model.TuningConstraints.Parameter;
+import mil.af.flagging.dataminer.model.Parameter;
 
 /**
  *

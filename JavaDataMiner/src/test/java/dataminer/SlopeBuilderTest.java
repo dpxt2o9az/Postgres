@@ -34,6 +34,12 @@ public class SlopeBuilderTest extends TransactionalTestBase {
         expectedSlopes = Collections.unmodifiableList(buildExpectedSlopes());
     }
 
+    @Override
+    protected void onTearDownAfterTransaction() throws Exception {
+        
+        super.onTearDownAfterTransaction(); //To change body of generated methods, choose Tools | Templates.
+    }
+
     static class RF {
 
         private BigDecimal rf;

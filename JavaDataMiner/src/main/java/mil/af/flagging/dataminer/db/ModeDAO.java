@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import mil.af.flagging.dataminer.model.EnvModeMap;
 import mil.af.flagging.dataminer.model.EnvRange;
+import mil.af.flagging.dataminer.model.Parameter;
 import mil.af.flagging.dataminer.model.PriSequence;
 import mil.af.flagging.dataminer.model.TuningConstraints;
 
@@ -32,7 +33,7 @@ public class ModeDAO {
         return Collections.EMPTY_LIST;
     }
 
-    public void fillMap(Connection conn, EnvModeMap map, Map<TuningConstraints.Parameter, Collection<EnvRange>> envRanges) {
+    public void fillMap(Connection conn, EnvModeMap map, Map<Parameter, Collection<EnvRange>> envRanges) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
